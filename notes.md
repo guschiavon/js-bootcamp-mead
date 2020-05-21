@@ -394,3 +394,13 @@ for (initializer; condition; expression) {
   console.log(...)
 }
 ```
+In a practical example:
+```
+let myArray = ['My first item', 'Item 2', 'Another item here']
+for ( let count = 0; count < myArray.length; count++ ) {
+  const index = count + 1
+  const item = myArray[count]
+  console.log(`${index}. ${item}`)
+}
+```
+In here, the `initializer` tells the `for` loop to set the `count` variable to '0', referring to the first item in the array. Then, the `condition` asks if the `count` value is less than (`<`) the size of the array (`myArray.length`), then proceed and run this `expression` which adds 1 to the previous `count` variable until the condition is `true`. The resulting code cycles through all the array items from zero till the last item in the array. We can call the `count` variable inside the `for` loop, first by declaring a new variable (`index`) to rank the array item according to their position, adding '1' to the position value (starting at '0'), and then declaring the `item` variable which is every item in the array `myArray` starting at '0' (as declared on the `initializer`). **Notice that the `count` variable changes by adding 1 to its value every cycle of the `for` loop**, hence the output in the `item` also changes.
