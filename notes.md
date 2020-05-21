@@ -348,3 +348,49 @@ We can also make changes to arrays (like adding or removing array items) using m
 - `myArray.pop()`: the `pop` method **removes** the **last** item of the array (basically the opposite of `push`).
 - `myArray.unshift('New array item')`: the `unshift` method adds the new item to the **beginning** of the array.
 - `myArray.shift()`: the `shift` method **removes** the **first** item of the array.
+- `myArray.splice(starting_point, quantity, new_item)`: the `splice` method allows us to pick a starting point in the array _(i.e. the array item position)_, choose how many items to manipulate (i.e. remove) and also pass new values to the array position. For example:
+```
+myArray.splice(1, 3)
+
+console.log(myArray)
+
+// Will remove 3 items starting from position 1 in the array, resulting in {'Array item 1', 'Another array item'}
+
+// OR
+
+myArray.splice(2, 0, 'New item')
+
+console.log(myArray)
+
+// Will insert a new array item ('New item') in the second position of the array without removing any other array items.
+```
+### Looping over arrays
+We can use a specific method for looping over arrays. A common method for looping over arrays is called `forEach()`, it is a *function*, and it takes a single argument to it: another `function()`. This is referred to as a **Callback Function**. Common ways of doing this:
+```
+// Define a variable that is a function and pass it as an argument to the forEach method:
+
+const doThis = function(arguments) {
+  ...
+}
+
+myArray.forEach(doThis)
+
+// OR
+
+// Pass the function in-line in the forEach method:
+
+myArray.forEach(function(arguments){
+
+  })
+```
+### For Loops
+Using the reserved word `for` we can run the loop with specific configuration inside the parenthesis. The configuration required takes all of the following, **separated by a semi-colon (`;`):**
+- an `initializer`: the initializer is only run **once** and is the starting point for the `for` loop. **It can also be a declared variable** which is scoped to the `for` loop only.
+- a `condition`: a logic to follow in order to provide an end to the loop, otherwise it runs infinitely. **This is an important point to consider**.
+- an `expression`: runs after the `condition` is met, or doesn't run if not met. Examples could be **increase the count** or **remove an item**.
+For an overview:
+```
+for (initializer; condition; expression) {
+  console.log(...)
+}
+```
