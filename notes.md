@@ -245,11 +245,10 @@ console.log(gschiavonUser.userLocation)
 console.log(gschiavonUser.userContact)
 ```
 
-In here we are passing the object (`gschiavon`) data to the function (`getUser`) which takes the `user` variable. We are then returning (`return`) the user location and contact information using a `template string` and `dot notation`. Then, **storing the data** in a new variable (`gschiavonUser`) by **calling the function** (`getUser(gschiavon)`). **Both template strings** (`userLocation` and `userContact`) from the function are now available for output. We can then print the strings using `dot notation`.
+> In here we are passing the object (`gschiavon`) data to the function (`getUser`) which takes the `user` variable. We are then returning (`return`) the user location and contact information using a `template string` and `dot notation`. Then, **storing the data** in a new variable (`gschiavonUser`) by **calling the function** (`getUser(gschiavon)`). **Both template strings** (`userLocation` and `userContact`) from the function are now available for output. We can then print the strings using `dot notation`.
 
-### Object References (Lesson 30)
-
-OK, here it starts to get a bit complicated... Referencing an object that is also passed as a function variable will result in that same object being updated. It is basically the same **object in memory**. Have a look a this example:
+### Object References
+Referencing an object that is also passed as a function variable will result in that same object being updated. It is basically the same **object in memory**. Have a look a this example:
 ```
 let myAccount =  {
   name: 'Gus Schiavon',
@@ -290,7 +289,7 @@ console.log(restaurant.checkAvailability(2))
 restaurant.seatParty(3)
 console.log(restaurant.checkAvailability(4))
 ```
-In the above example, using `this` to reference to the `restaurant` object we are able to pull the property values and manipulate them **inside the object itself**. This is useful as we can then call the function using `dot notation` and reference those methods for the object. In the example, the first `console.log()` should print `true`, and the second `false`.
+> In the above example, using `this` to reference to the `restaurant` object we are able to pull the property values and manipulate them **inside the object itself**. This is useful as we can then call the function using `dot notation` and reference those methods for the object. In the example, the first `console.log()` should print `true`, and the second `false`.
 
 A great database for built-in JS methods is the **MDN database**.
 
@@ -313,7 +312,7 @@ let isValidPassword = function (password) {
 
 console.log(isValidPassword(password))
 ```
-In here, the function will check if the variable has the `$` symbol by using the `includes('$')` method and passing the string as argument, and also check if the password length is valid using the `length` method. If both conditions are met, it will print the `This is a valid password` string; else, it will return `Invalid Password`.
+> In here, the function will check if the variable has the `$` symbol by using the `includes('$')` method and passing the string as argument, and also check if the password length is valid using the `length` method. If both conditions are met, it will print the `This is a valid password` string; else, it will return `Invalid Password`.
 
 _Tip:_ You can also remove the `if/else` statement if only wanting the boolean result (`true/false`) by simply calling `return` before the conditional logic (remove `if` and `else`).
 
@@ -403,4 +402,4 @@ for ( let count = 0; count < myArray.length; count++ ) {
   console.log(`${index}. ${item}`)
 }
 ```
-In here, the `initializer` tells the `for` loop to set the `count` variable to '0', referring to the first item in the array. Then, the `condition` asks if the `count` value is less than (`<`) the size of the array (`myArray.length`), then proceed and run this `expression` which adds 1 to the previous `count` variable until the condition is `true`. The resulting code cycles through all the array items from zero till the last item in the array. We can call the `count` variable inside the `for` loop, first by declaring a new variable (`index`) to rank the array item according to their position, adding '1' to the position value (starting at '0'), and then declaring the `item` variable which is every item in the array `myArray` starting at '0' (as declared on the `initializer`). **Notice that the `count` variable changes by adding 1 to its value every cycle of the `for` loop**, hence the output in the `item` also changes.
+> In here, the `initializer` tells the `for` loop to set the `count` variable to '0', referring to the first item in the array. Then, the `condition` asks if the `count` value is less than (`<`) the size of the array (`myArray.length`), then proceed and run this `expression` which adds 1 to the previous `count` variable until the condition is `true`. The resulting code cycles through all the array items from zero till the last item in the array. We can call the `count` variable inside the `for` loop, first by declaring a new variable (`index`) to rank the array item according to their position, adding '1' to the position value (starting at '0'), and then declaring the `item` variable which is every item in the array `myArray` starting at '0' (as declared on the `initializer`). **Notice that the `count` variable changes by adding 1 to its value every cycle of the `for` loop**, hence the output in the `item` also changes.
