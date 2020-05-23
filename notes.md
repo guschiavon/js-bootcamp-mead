@@ -403,3 +403,54 @@ for ( let count = 0; count < myArray.length; count++ ) {
 }
 ```
 > In here, the `initializer` tells the `for` loop to set the `count` variable to '0', referring to the first item in the array. Then, the `condition` asks if the `count` value is less than (`<`) the size of the array (`myArray.length`), then proceed and run this `expression` which adds 1 to the previous `count` variable until the condition is `true`. The resulting code cycles through all the array items from zero till the last item in the array. We can call the `count` variable inside the `for` loop, first by declaring a new variable (`index`) to rank the array item according to their position, adding '1' to the position value (starting at '0'), and then declaring the `item` variable which is every item in the array `myArray` starting at '0' (as declared on the `initializer`). **Notice that the `count` variable changes by adding 1 to its value every cycle of the `for` loop**, hence the output in the `item` also changes.
+
+#### Searching specific items in the array (Lesson 42)
+We can use methods to search for specific items in the array. This is particularly useful as the array might be composed of objects with multiple properties, all and any of which we want to make use of. We can use `indexOf()` but this is not as useful as `findIndex()`, which takes a function as its argument. In addition:
+- `indexOf()` will output `-1` if it's undefined.
+- searches are **case sensitive**
+- **IMPORTANT**: when searching for equal objects, it **does not** matter if the object has the same properties or the same property values: an object is only equal to another object if it is the **exact same object** or **declared to be the same object**:
+
+```
+console.log({} === {})
+// This returns 'false', as there is no way to check if that object is the same as the other.
+
+
+let myObject = {}
+let otherObject = myObject  
+console.log(myObject === otherObject)
+// This returns 'true' as the objects are declared to be the same
+
+```
+##### Using `findIndex()`
+```
+const myArray = [
+  {
+  title: 'My first item',
+  body: 'This is the content of the first item'
+}, {
+  title: 'Another item',
+  body: 'Another body content for this item'
+}, {
+  title: 'Something completely random',
+  body: 'Some more content here'
+}]
+
+const index = myArray.findIndex(function(item, index) {
+  return myArray.title === 'Another item'
+  })
+
+console.log(index)  
+```
+> In this example, there are 3 `objects` in the array, all of which take the `title` and the `body` properties. We use the `findIndex()` method to check the position of the array item and return the object if it matches the argument. First, establishing a variable (`index`) and pass the `findIndex()` function and making the array `item` and its `index` available. The function runs and will find the `index` position of the array item which has the title equal to (`===`) `Another item`
+
+Some more examples of use cases:
+```
+const findItem = function(myArray, itemTitle){
+  const index = myArray.findIndex(function(arrayItem, index){
+    return arrayItem.title === itemTitle // Return for the 'findIndex()' function
+  })
+  return myArray[index] // Return for the 'findItem()' function
+}
+console.log(findItem(myArray, 'My first item'))
+```
+> We pass the `console.log` with the `findItem()` function, which will look into the `myArray` array for an item with the title `'My first item'`. The title is a **function argument.** Inside the `findItem()` function, we will pass `findIndex()` to find the item index in the `myArray` that matches the `itemTitle` from the `findItem()` function. The program will run and return the `index` of the `arrayItem` which matches the `itemTitle` specified on the `findIndex` function. If there is a match it will be stored in the `index` variable.
