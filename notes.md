@@ -451,6 +451,7 @@ const findItem = function(myArray, itemTitle){
   })
   return myArray[index] // Return for the 'findItem()' function
 }
-console.log(findItem(myArray, 'My first item'))
+const arrayItem = findItem(myArray, 'another item')
+console.log(arrayItem)
 ```
 > We pass the `console.log` with the `findItem()` function, which will look into the `myArray` array for an item with the title `'My first item'`. The title is a **function argument.** Inside the `findItem()` function, we will pass `findIndex()` to find the item index in the `myArray` that matches the `itemTitle` from the `findItem()` function. The program will run and return the `index` of the `arrayItem` which matches the `itemTitle` specified on the `findIndex` function. If there is a match it will be stored in the `index` variable.
