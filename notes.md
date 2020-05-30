@@ -112,12 +112,20 @@ Functions are like subprograms: they are reusable snippets that run codes when p
 
 An interesting parallel: _It's like storing a value (code) into a variable (function)_
 
+A function always needs to end with a `return` call. If a simple variable is declared as a function, **you can use `return` directly instead of `let` or `const`**.
+
 **Nomenclature of syntax:**
 ```
 let myFunction = function (_argument1_, _argument2_) { // Where argument is input
   let result = ...
   return result // Output
 }
+
+// Or using 'return' directly:
+let myFunction = function (_argument1_, _argument2_) { // Where argument is input
+  return result = ...
+}
+
 
 myFunction(arguments) // Function called
 ```
@@ -404,10 +412,19 @@ for ( let count = 0; count < myArray.length; count++ ) {
 ```
 > In here, the `initializer` tells the `for` loop to set the `count` variable to '0', referring to the first item in the array. Then, the `condition` asks if the `count` value is less than (`<`) the size of the array (`myArray.length`), then proceed and run this `expression` which adds 1 to the previous `count` variable until the condition is `true`. The resulting code cycles through all the array items from zero till the last item in the array. We can call the `count` variable inside the `for` loop, first by declaring a new variable (`index`) to rank the array item according to their position, adding '1' to the position value (starting at '0'), and then declaring the `item` variable which is every item in the array `myArray` starting at '0' (as declared on the `initializer`). **Notice that the `count` variable changes by adding 1 to its value every cycle of the `for` loop**, hence the output in the `item` also changes.
 
-#### Searching specific items in the array (Lesson 42)
-We can use methods to search for specific items in the array. This is particularly useful as the array might be composed of objects with multiple properties, all and any of which we want to make use of. We can use `indexOf()` but this is not as useful as `findIndex()`, which takes a function as its argument. In addition:
-- `indexOf()` will output `-1` if it's undefined.
-- searches are **case sensitive**
+### Searching arrays (Lesson 42)
+We can use methods to search for specific items in the array. This is particularly useful as the array might be composed of objects with multiple properties, all and any of which we want to make use of.
+We can use some methods like:
+- `findIndex()` which uses a _callback_ function as first parameter
+- `indexOf()` which expects a _value_ as first parameter
+- `find()`
+- searches are **case sensitive** unless using a method to sanitize the code (like `toLowerCase()`).
+
+Some more information on these methods:
+> The main difference are the parameters of these functions:
+`Array.prototype.indexOf()` expects a value as first parameter. This makes it a good choice to find the index in arrays of primitive types (like string, number, or boolean). Can be useful to find if there is an item in the array or not.
+`Array.prototype.findIndex()` expects a callback as first parameter. Use this if you need the index in arrays with non-primitive types (e.g. objects) or your find condition is more complex than just a value.
+
 - **IMPORTANT**: when searching for equal objects, it **does not** matter if the object has the same properties or the same property values: an object is only equal to another object if it is the **exact same object** or **declared to be the same object**:
 
 ```
@@ -422,6 +439,7 @@ console.log(myObject === otherObject)
 
 ```
 ##### Using `findIndex()`
+The `findIndex()` function's objective is to find the index of a specific item in the array. It does so by returning `true` when the callback function (the function inside the `findIndex()` parenthesis) finds a match.
 ```
 const myArray = [
   {
@@ -455,3 +473,250 @@ const arrayItem = findItem(myArray, 'another item')
 console.log(arrayItem)
 ```
 > We pass the `console.log` with the `findItem()` function, which will look into the `myArray` array for an item with the title `'My first item'`. The title is a **function argument.** Inside the `findItem()` function, we will pass `findIndex()` to find the item index in the `myArray` that matches the `itemTitle` from the `findItem()` function. The program will run and return the `index` of the `arrayItem` which matches the `itemTitle` specified on the `findIndex` function. If there is a match it will be stored in the `index` variable.
+
+### Filtering Arrays (Lesson 44)
+Another useful method function is the `filter()` method. This allows us to check properties of the array object and pull the ones that match the value passed to the function:
+```
+const toDos = [{
+  title: 'Organize schedule',
+  status: 'completed'
+}, {
+  title: 'Finalize portfolio',
+  status: 'incomplete'
+}, {
+  title: 'Film intro video',
+  status: 'incomplete'
+}, {
+  title: 'Fix board ding',
+  status: 'incomplete'
+}, {
+  title: 'Email someone',
+  status: 'completed'
+}]
+
+const findItem = function (array, query) {
+  return filteredItems = array.filter(function (item) {
+    return items = item.status.toLowerCase().includes(query)
+  })
+}
+
+console.log(findItem(toDos, 'incomplete'))
+
+const getIncompleteItem = function (array) {
+  return array.filter(function (item) {
+    return item.status === 'incomplete'
+  })
+}
+
+console.log(getIncompleteItem(toDos))
+```
+> The first function `findItem()` takes 2 attributes: the `array` to be evaluated and the `query` to be considered when filtering the `array`. It returns the `filteredItems` variable, which is the filter itself: it takes the `array` and uses the `filter()` method function. The `filter` method filters each `item` in the `array` and returns the `items` where the the `item.status` INCLUDES the `query`.
+
+> The second function `getIncompleteItem()` works similarly but the output is based on the equality operator (`===`) facing the string `'incomplete'`, which is hard coded on the function. Notice that the `getIncompleteItem()` function only takes one attribute (the `array` being checked) while the previous function takes both the `array` and the `query`.
+
+### Sorting Arrays
+We can sort arrays by comparing the array objects or their properties. Sorting takes the `sort()` method which on its own, will sort items in _alphabetical order_. This is not usually that helpful, so `sort()` can also take an optional `compareFunction`. This allows us to compare objects between each other in the array. Traditionally developers use `a` and `b` as comparison, `a` being  _a object_ in the array and `b` being _any and every other object_ in the array.
+
+#### Some essentials:
+- Default evaluation is based on **ascending** alphabetical/numerical order
+- Greater-than (`>`) becomes `after` and less-than (`<`) becomes `before`.
+- Boolean logic uses `!` for **not**.
+- Sorting also requires `if / else if / else` logic together with the `compareFunction`, and uses `-1`, `1` and `0` as return values to validate the logic, where `-1` is assigned to objects that should **come before**, `1` is assigned for objects that **come after** and `0` is assigned to objects to which their position **should not change** (equal position). This also means the alphabetical order of those objects will be respected due to the nature of `sort()`.
+
+```
+const sortItems = function (array) {
+  array.sort(function (a, b) {
+    if (a.property > b.property) {
+      return -1
+    } else if (b.property > a.property) {
+      return 1
+    } else {
+      return 0
+    }
+  })
+}
+```
+## JS in the browser
+### Overview
+JavaScript allows for user interactions in our site, like listening to events when a user clicks a button, or manipulating the content to display once an action is performed. JS works with manipulations of the `DOM`, or _**Document Object Model**_. The `DOM` is **an object that manipulates the HTML code** and is what is visible to the user, what's rendered on the browser.
+
+The browser provides us with the `document` word for defining the `DOM`.
+
+#### Important to notice that the placement of the script in the HTML file is important. If a script is called too soon, although valid, it will not provide any output due to the lack of references.
+
+Changes on the DOM are represented in the browser but don't affect the `HTML`. For instance, using the `remove()` method will remove the targeted item in the browser, although the item still exists in the `HTML` file:
+
+```
+const item = document.querySelector('h1')
+item.remove()
+```
+> This will remove the first H1 tag from the DOM, but not from the HTML file.
+### Manipulate the DOM
+
+#### Queries
+Performing queries to select objects in the DOM is a common action in JS; for example, to select where to insert an element in the DOM.
+- `querySelector()`: selects the **first instance** of the query in the DOM. Normally used for queries targeting elements by their `id` (only one `id` per element)
+- `querySelectorAll()`: selects **all** the instances of the query in the DOM. Normally used for selecting elements by their `class` (multiple elements with the same `class`)
+
+```
+const pa = document.querySelectorAll('p')
+
+pa.forEach(function (p) {
+  p.textContent = 'Change to this'
+  })
+```
+> In this instance, the `querySelectorAll()` will scan the HTML document for all paragraphs (`p`) and store in the `pa` variable. Then, we run the `forEach()` function on this variable and pass the contents of all `p` tags for the string referenced in the function.
+
+```
+const paragraphs = document.querySelectorAll('p')
+
+removeItems.forEach(function (paragraph){
+  if (paragraph.textContent.includes('Something')) {
+    paragraph.remove()
+  }
+})
+```
+> Here, we are defining what are the items to be selected (`paragraphs`), and then we tell the browser to analyze each of the items (`paragraph`) and if the `paragraph` body `includes` the string `'Something'`, then remove that paragraph.
+
+#### Adding elements to the DOM
+We can use JS to add elements in the DOM. These elements are not represented in the HTML file but passed as output in the DOM. For this we can use the `appendChild()` method.
+```
+const newParagraph = document.createElement('p')
+newParagraph.textContent = 'My new paragraph shows this text'
+document.querySelector('body').appendChild(newParagraph)
+```
+> In here, we first establish the element to be created, in this case `newParagraph` which is a `p` tag. THe next line adds the content to this element via the `textContent` method and the string is passed to this element. Now, we must choose where we will place the new element in the DOM; in this case, we select the `body` tag as reference and print the `newParagraph` at the end of the `body` tag via the `appendChild` method.
+
+### Working with Arrays
+
+#### Filtering arrays for DOM output
+Here are some examples of how we can filter the arrays for DOM output:
+
+**Using Boolean**
+```
+const toDos = [{
+  title: 'Organize schedule',
+  complete: true
+}, {
+  title: 'Finalize portfolio',
+  complete: false
+}, {
+  title: 'Film intro video',
+  complete: true
+}, {
+  title: 'Fix board ding',
+  complete: false
+}, {
+  title: 'Email someone',
+  complete: true
+}]
+
+const toDoNotice = document.createElement('p')
+const incompleteToDos = toDos.filter(function (toDo) {
+  return !toDo.complete
+})
+toDoNotice.textContent = `You have ${incompleteToDos.length} items left on your To Do list`
+document.querySelector('body').appendChild(toDoNotice)
+```
+**Using string**
+```
+const toDos = [{
+  title: 'Organize schedule',
+  status: 'ready'
+}, {
+  title: 'Finalize portfolio',
+  status: 'stand-by'
+}, {
+  title: 'Film intro video',
+  status: 'ready'
+}, {
+  title: 'Fix board ding',
+  status: 'stand-by'
+}, {
+  title: 'Email someone',
+  status: 'stand-by'
+}]
+
+const toDoNotice = document.createElement('p')
+const incompleteToDos = toDos.filter(function (toDo) {
+  return toDo.status.includes('stand-by')
+})
+toDoNotice.textContent = `You have ${incompleteToDos.length} items on stand-by on your second To Do List`
+document.querySelector('body').appendChild(toDoNotice)
+```
+> Both instances create a filtered array (`incompleteToDos`) containing only the objects that match the filter. We can then make use of the `.length` property to check how many items are in this filtered array and output the number.
+
+#### Iterate over array for DOM output
+We can make use of the `forEach` function to iterate over array objects and their properties for DOM rendering:
+```
+toDos.forEach(function (toDo) {
+  const toDoItem = document.createElement('ul')
+  toDoItem.textContent = toDo.title
+  document.querySelector('body').appendChild(toDoItem)
+})
+```
+> In here, we use the `forEach` method to iterate over every object (`toDo`) in the array `toDos`, create a `li` item and print their `title` property into the `toDoItem` via `textContent`.
+
+### Event Listeners
+Providing the functionality for user interaction is the basis of any app. With JS we can do this using **event listeners**. These event listeners "listen" to the user's actions and perform an action in exchange. For example:
+
+**- Listen to a click**
+```
+document.querySelector('#cta-button').addEventListener('click', function (event) {
+  event.target.textContent = 'Button was clicked'
+  })
+```
+> The `addEventListener()` function takes a `string` for the event description, and a `function()` with the `event` argument (optional to declare). For instance, we can pass another `textContent` to the element via the `event.target.textContent` which means the text of the element clicked will change once it's clicked. The `event` is normally declared simply as `e`, and if you `console.log(e)` you can access all the properties of the event on the browser's console.
+
+**- Listen to input field changes**
+We can use a couple of methods for this:
+- `addEventListener('change', function (e) {...})`: the `change` event gives us the `value` of the `input` field **once it's clicked away**, meaning it doesn't give us real-time data.
+- `addEventListener('input', function (e) {...})`: the `input` event provides us with **real-time update** of the data being passed in the `input` field. Very good for _"Search"_ features
+
+Let's have a look at this code:
+```
+const toDos = [{
+  title: 'Organize schedule',
+  complete: true
+}, {
+  title: 'Finalize portfolio',
+  complete: false
+}, {
+  title: 'Film intro video',
+  complete: true
+}, {
+  title: 'Fix board ding',
+  complete: false
+}, {
+  title: 'Email someone',
+  complete: true
+}]
+
+const filters = {
+  searchText: ''
+}
+
+document.querySelector('#search-query').addEventListener('input', function (e) {
+  filters.searchText = e.target.value
+  renderToDos(toDos, filters)
+})
+
+const renderToDos = function (toDos, filters) {
+  const filteredToDos = toDos.filter(function (toDo) {
+    return toDo.title.toLowerCase().includes(filters.searchText.toLowerCase())
+  })
+
+  document.querySelector('#todos').innerHTML = ''
+
+  filteredToDos.forEach(function (toDo){
+    const newEl = document.createElement('li')
+    newEl.textContent = toDo.title
+    document.querySelector('#todos').appendChild(newEl)
+  })
+}
+
+renderToDos(toDos, filters)
+
+```
+**What's happening here?**
+> We're calling the `renderToDos` function over the array `toDos` and also making use of the `filters` object. Inside, we are filtering the `toDos` according to their `title` attribute and the `filters.searchText`, which is defined by the `addEventListener('input')` function, which listens to the `event` (or `e`) on the target's value, in this case the value passed onto the `input` field. Then, the `document.querySelector('#todos').innerHTML = ''` method **empties the container** for the rendered To Dos. We then iterate over each of the new filtered array with the `filteredToDos.forEach` function. It creates a new element and passes the value to the element (`textContent`) based on the `toDo.title`. THe element is rendered with the `appendChild` method.

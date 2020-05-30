@@ -16,23 +16,27 @@ const notes = [{
   archive: true
 }]
 
-const findArchivedItem = function (array) {
-  return array.filter(function (arrayItem) {
-    return arrayItem.archive
+const filters = {
+  searchText: ''
+}
+
+document.querySelector('#search-box').addEventListener('input', function (e) {
+  filters.searchText = e.target.value
+  renderNotes(notes, filters)
+})
+
+const renderNotes = function (notes, filters) {
+  const filteredNotes = notes.filter(function (note) {
+    return note.body.toLowerCase().includes(filters.searchText.toLowerCase())
+  })
+
+  document.querySelector('#notes').innerHTML = ''
+
+  filteredNotes.forEach(function (note) {
+    const newNote = document.createElement('li')
+    newNote.textContent = note.body
+    document.querySelector('#notes').appendChild(newNote)
   })
 }
 
-const sortItems = function (array) {
-  array.sort(function (a) {
-    if (!a.archive) {
-      return -1
-    } else {
-      return 1
-    }
-  })
-}
-
-console.log(findArchivedItem(notes))
-console.log('****************************')
-sortItems(notes)
-console.log(notes)
+renderNotes(notes, filters)
