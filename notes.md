@@ -666,13 +666,14 @@ document.querySelector('#cta-button').addEventListener('click', function (event)
   event.target.textContent = 'Button was clicked'
   })
 ```
-> The `addEventListener()` function takes a `string` for the event description, and a `function()` with the `event` argument (optional to declare). For instance, we can pass another `textContent` to the element via the `event.target.textContent` which means the text of the element clicked will change once it's clicked. The `event` is normally declared simply as `e`, and if you `console.log(e)` you can access all the properties of the event on the browser's console.
+> In here, the `addEventListener()` function takes a `string` for the event description, and a `function()` with the `event` argument (optional to declare). For instance, we can pass another `textContent` to the element via the `event.target.textContent` which means the text of the element clicked will change once it's clicked. The `event` is normally declared simply as `e`, and if you `console.log(e)` you can access all the properties of the event on the browser's console.
 
 **- Listen to input field changes**
 We can use a couple of methods for this:
-- `addEventListener('change', function (e) {...})`: the `change` event gives us the `value` of the `input` field **once it's clicked away**, meaning it doesn't give us real-time data.
-- `addEventListener('input', function (e) {...})`: the `input` event provides us with **real-time update** of the data being passed in the `input` field. Very good for _"Search"_ features
+- `addEventListener('change', function (e) {...})`: the `change` event gives us the `value` of the `input` field **once it's clicked away**, meaning it doesn't give us real-time data. Useful for form submissions where what matters is the final value.
+- `addEventListener('input', function (e) {...})`: the `input` event provides us with **real-time update** of the data being passed in the `input` field. Very good for _"Search"_ features where partial input is already useful
 
+### Working with forms and inputs
 Let's have a look at this code:
 ```
 const toDos = [{
@@ -719,4 +720,21 @@ renderToDos(toDos, filters)
 
 ```
 **What's happening here?**
-> We're calling the `renderToDos` function over the array `toDos` and also making use of the `filters` object. Inside, we are filtering the `toDos` according to their `title` attribute and the `filters.searchText`, which is defined by the `addEventListener('input')` function, which listens to the `event` (or `e`) on the target's value, in this case the value passed onto the `input` field. Then, the `document.querySelector('#todos').innerHTML = ''` method **empties the container** for the rendered To Dos. We then iterate over each of the new filtered array with the `filteredToDos.forEach` function. It creates a new element and passes the value to the element (`textContent`) based on the `toDo.title`. THe element is rendered with the `appendChild` method.
+> We're calling the `renderToDos` function over the array `toDos` and also making use of the `filters` variable properties. Inside, we are filtering the `toDos` according to their `title` attribute and the `filters.searchText`, which is defined by the `addEventListener('input')` function, which listens to the `event` (or `e`) on the target's value (in this case, the `<input>` tag value using the `id="search-query"`), and the value passed onto the `input` field. Then, the `document.querySelector('#todos').innerHTML = ''` method **empties the container** for the rendered To Dos every time the input value changes. We then iterate over each of the new filtered array with the `filteredToDos.forEach` function. It **creates a new element** and passes the value to the element (`textContent`) based on the `toDo.title`. The element is rendered with the `appendChild` method.
+
+### Rendering user-created data in the browser
+Forms and inputs are useful to dynamically manipulate the DOM and begin to output user-generated data via forms and input fields. The event we are listening to is the `submit` event and capturing the data that has been passed in the fields/dropdowns/checkboxes/etc...
+
+_NB: In the following example, the data is not passed to server nor stored in the browser_
+
+```
+document.querySelector('#newToDo').addEventListener('submit', function (e) {
+  e.preventDefault() // This prevents the browsers default action
+  toDos.push({
+    title: e.target.elements.title.value,
+    complete: false
+  }) // creating an object and including it into the array
+  renderToDos(toDos, filters)
+  e.target.elements.title.value = '' // Clears the form upon submit event
+})
+```
