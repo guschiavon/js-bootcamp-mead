@@ -10,7 +10,7 @@ JS syntax allows for _optional_ inserting a semi-colon at the end of the stateme
 Simple `true` and `false` statements to control output.
 
 ### Variables
-Variables are a way to store values for later. In JS, the reserved word for the variable is `let`. In a basic example:
+Variables are a way to store values for later. In JS, the reserved words for the variable are `let` (when the variable will alter state) and `const` (constant value). In a basic example:
 ```
 let name = 'Lucy Fer'
 ```
@@ -646,7 +646,7 @@ document.querySelector('body').appendChild(toDoNotice)
 ```
 > Both instances create a filtered array (`incompleteToDos`) containing only the objects that match the filter. We can then make use of the `.length` property to check how many items are in this filtered array and output the number.
 
-#### Iterate over array for DOM output
+### Iterate over array for DOM output
 We can make use of the `forEach` function to iterate over array objects and their properties for DOM rendering:
 ```
 toDos.forEach(function (toDo) {
@@ -672,6 +672,9 @@ document.querySelector('#cta-button').addEventListener('click', function (event)
 We can use a couple of methods for this:
 - `addEventListener('change', function (e) {...})`: the `change` event gives us the `value` of the `input` field **once it's clicked away**, meaning it doesn't give us real-time data. Useful for form submissions where what matters is the final value.
 - `addEventListener('input', function (e) {...})`: the `input` event provides us with **real-time update** of the data being passed in the `input` field. Very good for _"Search"_ features where partial input is already useful
+
+## CRUD actions
+CRUD stands for **Create**, **Read**, **Update** and **Delete** and are the 4 most common actions performed by a user of any app. We use JavaScript to handle these tasks resulting from these actions.
 
 ### Working with forms and inputs
 Let's have a look at this code:
@@ -725,16 +728,95 @@ renderToDos(toDos, filters)
 ### Rendering user-created data in the browser
 Forms and inputs are useful to dynamically manipulate the DOM and begin to output user-generated data via forms and input fields. The event we are listening to is the `submit` event and capturing the data that has been passed in the fields/dropdowns/checkboxes/etc...
 
-_NB: In the following example, the data is not passed to server nor stored in the browser_
+_NB: In the following example, the data is **not** passed to server nor stored in the browser_
 
 ```
 document.querySelector('#newToDo').addEventListener('submit', function (e) {
-  e.preventDefault() // This prevents the browsers default action
+  e.preventDefault() // This prevents the browsers default submit action
   toDos.push({
     title: e.target.elements.title.value,
     complete: false
   }) // creating an object and including it into the array
-  renderToDos(toDos, filters)
+  renderToDos(toDos, filters) // Renders the to dos including the newly created item
   e.target.elements.title.value = '' // Clears the form upon submit event
 })
 ```
+#### What's happening here?
+> We are listening to the `submit` event on the `#newToDo` form. First we are preventing the browser's default behaviour with the `e.preventDefault()` method. Next we add the new data to a new array object with the `push()` method, passing the input value (`title` and `complete`) as object's properties. Then, re-render the toDos array using the `renderToDos` function, and clear the `input` values upon the submit event.
+
+### Working with local storage (browser storage)
+We can store the data passed from inputs into the browser; this allows us to add multiple data properties before pushing the information to the server.
+
+The `localStorage` can be accessed on the browser's dev tools under the Application tab (Chrome).
+
+We make use of `localStorage` in the same way we make use of `document` (it's a browser definition): by using CRUD methods. For example:
+- **Create/Update:** `localStorage.setItem('title', 'My new item')`: the `setItem` creates a new data point in the browser storage. Here, it's using the key `title` to create a property with the value of `My new item`.
+- **Read:** `localStorage.getItem('title')`: the `getItem` method will output the data previously stored in the local property declared on the `key`.
+- **Destroy:** `localStorage.removeItem('title')`: the `removeItem` method will remove the specific value of the property declared on the `key`
+- **Destroy:** `localStorage.clear()`: the `clear` method takes no arguments and will clear all items in the `localStorage`
+
+The `localStorage` **only stores strings**, which is not so helpful for objects... so it's necessary to convert the object into a string. We can do this using `JSON` (Java Script Object Notation). The `JSON` method allow us to:
+- transform the object into a string with the `JSON.stringify()` method. We use this when creating data before parsing the object's properties.
+- parse the object's properties with the `JSON.parse()` method.
+
+Let's see how this works together with Local Storage:
+
+```
+const user = {
+  name: 'Gus,
+  country: 'Brazil'
+}
+
+const userJSON = JSON.stringify('user')
+localStorage.setItem('user', userJSON)
+const user = JSON.parse(userJSON)
+console.log(`${user.name} is from ${user.country}`)
+```
+
+The data from the JSON string is not readily available until we actually parse it, so using `userJSON.name` or `userJSON.country` would result in `undefined`.
+
+### Setting up third-party libraries
+When manipulating the DOM and creating numerous new elements, it becomes difficult to target the specific element with event listeners. For this, we can use third-party libraries like UUID to target the specific elements. Install the following library on the app:
+```
+ <script src="https://wzrd.in/standalone/uuid%2Fv4@latest"></script>
+```
+Then, add the `id` property to the new element and call the UUID function to populate the value:
+```
+const user = {
+  name: 'Gus,
+  country: 'Brazil',
+  id: uuidv4()
+}
+```
+
+Load the script and clean the local storage. Every new create item should now have a unique identifier number property.
+
+### Using unique identifiers to update object data
+We can parse the UUID number which allows us to render pages based on each object's data properties. By using a template string we can capture the `hash` value from the object. For example:
+
+```
+const id = uuidv4()
+
+const user = {
+  name: 'Gus',
+  country: 'Brazil',
+  id: id
+}
+
+location.assign(`/edit-user.html#${id}`)
+
+```
+
+#### Using the `substring` method
+The `substring` method is helpful because we can manipulate the ID generated by the `uuidv4()` function for example. It's simple like this:
+
+```
+location.hash.substring(1)
+```
+>This will remove the hash symbol from the start; the first argument represents the index for the start; an optional second argument could set where it should end.
+
+### The `window` object
+We can use the `window` object to make use of global JS objects, functions and variables. The `window` object preceeds the `document` object, meaning:
+#### `window.document.getElementById` is the same as `document.getElementById`
+
+This is a very handy object to have, as we can now make data changes be available in multiple tabs, in real time. 
