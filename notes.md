@@ -820,3 +820,52 @@ We can use the `window` object to make use of global JS objects, functions and v
 #### `window.document.getElementById` is the same as `document.getElementById`
 
 This is a very handy object to have, as we can now make data changes be available in multiple tabs, in real time. 
+
+### Arrow functions
+An arrow function expression is a syntactically compact alternative to a regular function expression (`function()`), although without its own bindings to the `this`, `arguments`, `super`, or `new.target` keywords. Arrow function expressions are not suitable for methods, and they cannot be used as constructors.
+
+### Conditional operators
+Conditional operators work well when we have to compare between 2 things. The logic is the first argument passed (if myAge is bigger or equal to 18), with a conditional operator '?' checking if it's true and passing the string. The ':' is another operator for the opposite side of the logic.
+
+## Object Oriented Programming
+Object-Oriented Programming is a concept that takes template methods for creating object **instances**. An instance is a compilation of data that uses an object's template (user, post, course, movie, etc...). It makes use of operators such as `new` and the so-called `constructor functions`.
+
+### Use of Constructor Functions
+Constructor functions follow convention to use a capital letter on the first letter of the function name. It does **not** require a `return` call. COnstructor functions also use the `this` call, and for this reason it cannot be used as an arrow function (does not bind `this`).
+
+### Prototypal Inheritance
+We use constructor functions together with the `prototype` property. Using the prototype property allows us to create methods that are shared with all instances:
+
+```
+const User = function (firstName, lastName, age) {
+  this.firstName = firstName
+  this.lastName = lastName
+  this.age = age
+}
+
+User.prototype.getBio = function() {
+  return `${this.firstName} is ${this.age}.`
+}
+```
+Above you can see that the `getBio()` method has been prototyped and is available to use with any `User` object instances.
+
+We can also use a prototype like this:
+```
+User.prototype.setName = function (fullName) {
+  const names = fullName.split(' ')
+  this.firstName = names[0]
+  this.lastName = names[1]
+}
+```
+Here we are using the split method to retrieve the first and last names. The split method creates a string (in this case, fullName), and remove the first instance of the argument passed.
+
+### Primitive Values
+
+Primitive values are also objects: string, number, boolean have also got a prototype property to them, making them also objects ("Everything is an object in JS"). The only primitive values that have no prototype are `undefined` and `null`.
+
+- Object: myObject   --> Object.prototype    --> null
+- Array: myArray     --> Array.prototype     --> Object.prototype --> null
+- Function: myFunc   --> Function.prototype  --> Object.prototype --> null
+- String: myString   --> String.prototype    --> Object.prototype --> null
+- Number: myNumber   --> Number.prototype    --> Object.prototype --> null
+- Boolean: myBoolean --> Boolean.prototype   --> Object.prototype --> null

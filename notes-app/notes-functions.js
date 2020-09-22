@@ -16,7 +16,7 @@ const renderNotes = function (notes, filters) {
 
 // Filter notes
 
-const filterNotes = function (notes, filters) {
+const filterNotes = (notes, filters) => {
     filters.searchText = e.target.value
     renderNotes(notes, filters)
     return filterNotes
