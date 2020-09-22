@@ -49,10 +49,13 @@ let num = (11 + 2) * 2
 
 **Concatenation**
 For combining multiple variables, you use the concatenation operators such as `+ - * /`.
+
 **Is equal**
 Use a triple equal sign (`===`) to ask if the variable is equal to the declared value
+
 **Is NOT equal**
 Use a double equal sign preclude by an exclamation sign (`!==`) to ask if the variable is _NOT_ equal to the declared value
+
 **Greater than/Less than**
 Use the `>` or `<` sign. Follows left-to-right convention. Can also be combined with a `=` sign to make `greater-than` or `less-than`.
 
